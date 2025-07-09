@@ -1,0 +1,8 @@
+import mysql.connector
+
+conn = mysql.connector.connect(
+    host="localhost",
+    user="usbtecnok",
+    password="@#*Z4939ia4",
+    database="usbtecnokcar"  # troque pelo seu banco, se usar
+)

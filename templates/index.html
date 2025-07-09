@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>USBtecnokCar</title>
+  <link rel="stylesheet" href="/static/style.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f9f9f9;
+      margin: 0;
+      padding: 20px;
+    }
+    .container {
+      max-width: 700px;
+      margin: 0 auto;
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    form {
+      margin-bottom: 20px;
+    }
+    label {
+      display: block;
+      margin-top: 10px;
+      font-weight: bold;
+      color: #333;
+    }
+    input[type="text"] {
+      width: 100%;
+      padding: 8px;
+      margin-top: 4px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+    button {
+      margin-top: 15px;
+      padding: 10px 20px;
+      background-color: #007BFF;
+      border: none;
+      border-radius: 4px;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    video {
+      width: 100%;
+      max-height: 400px;
+      border-radius: 8px;
+      display: block;
+      margin: 0 auto;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <img src="/static/logo.png" alt="USBtecnokCar Logo" style="max-width: 200px; display: block; margin: 0 auto 20px;">
+    <h1 style="text-align:center;">USBtecnokCar</h1>
+    <p style="text-align:center;">Seu transporte comunitário confiável</p>
+
+    <form action="/pedido" method="post">
+      <label for="origem">De:</label>
+      <input type="text" id="origem" name="origem" required>
+      
+      <label for="destino">Para:</label>
+      <input type="text" id="destino" name="destino" required>
+      
+      <button type="submit">Solicitar Corrida</button>
+    </form>
+
+    <video controls autoplay muted>
+      <source src="/static/videos/USBTECNOK_ Segurança e Praticidade no Transporte!.mp4" type="video/mp4" />
+      Seu navegador não suporta o elemento de vídeo.
+    </video>
+  </div>
+</body>
+</html>

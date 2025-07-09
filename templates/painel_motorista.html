@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Painel do Motorista</title>
+</head>
+<body>
+    <h1>Corridas Pendentes</h1>
+    {% if corridas %}
+        <ul>
+            {% for corrida in corridas %}
+                <li>
+                    Origem: {{ corrida.origem }} |
+                    Destino: {{ corrida.destino }} |
+                    <a href="/aceitar/{{ corrida.id }}">Aceitar Corrida</a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>Nenhuma corrida pendente.</p>
+    {% endif %}
+</body>
+</html>

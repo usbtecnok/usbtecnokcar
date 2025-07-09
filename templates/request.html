@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <title>Mapa da Corrida</title>
+
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-sA+e2qvl1lzIsCk1Eq8L7XZQLT/0zWxhA6DjJe1T7QU="
+    crossorigin=""
+  />
+  
+  <style>
+    #map {
+      width: 100%;
+      height: 400px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Detalhes da Corrida</h1>
+  <p>Origem: {{ corrida.origem }}</p>
+  <p>Destino: {{ corrida.destino }}</p>
+
+  <div id="map"></div>
+
+  <script
+    src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-o9N1jE0cbE49f0P5wQtvUFrka2a24st8MSb6Hyb3J6w="
+    crossorigin=""
+  ></script>
+
+  <script>
+    function buscarCoordenadas(endereco) {
+      const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(endereco)}`;
+      return fetch(url, {
+        headers: {
+          'User-Agent': 'USBtecnokCar/1.0 (contato@usbtecnok.com.br)',
+          'Referer': window.location.href
+        }
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.length > 0) {
+          return {
+            lat: parseFloat(data[0].lat),
+            lon: parseFloat(data[0].lon)
+          };
+        } else {
+          throw new Error("Endereço não encontrado: " + endereco);
+        }
+      });
+    }
+
+    async function mostrarRota() {
+      const origem = "{{ corrida.origem }}";
+      const destino = "{{ corrida.destino }}";
+
+      try {
+        const coordOrigem = await buscarCoordenadas(origem);
+        const coordDestino = await buscarCoordenadas(destino);
+
+        const map = L.map('map').setView([coordOrigem.lat, coordOrigem.lon], 13);
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          attribution: '&copy; OpenStreetMap'
+        }).addTo(map);
+
+        L.marker([coordOrigem.lat, coordOrigem.lon]).addTo(map).bindPopup("Origem").openPopup();
+        L.marker([coordDestino.lat, coordDestino.lon]).addTo(map).bindPopup("Destino");
+
+        const rota = L.polyline([
+          [coordOrigem.lat, coordOrigem.lon],
+          [coordDestino.lat, coordDestino.lon]
+        ], {color: 'blue'}).addTo(map);
+
+        map.fitBounds(rota.getBounds());
+
+      } catch (erro) {
+        console.error("Erro ao mostrar o mapa:", erro);
+        document.getElementById("map").innerHTML = "<p>Não foi possível carregar o mapa. Verifique os endereços.</p>";
+      }
+    }
+
+    mostrarRota();
+  </script>
+
+</body>
+</html>
+<video width="640" height="360" controls>
+  <source src="{{ url_for('static', filename='videos/USBTECNOK_ Segurança e Praticidade no Transporte!.mp4') }}" type="video/mp4">
+  Seu navegador não suporta a tag de vídeo.
+</video>

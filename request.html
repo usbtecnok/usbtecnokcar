@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Status da Corrida</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" />
+  <style>
+    #map { height: 400px; width: 100%; margin-top: 20px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Status da Corrida</h1>
+    <p><strong>Origem:</strong> {{ corrida.origem }}</p>
+    <p><strong>Destino:</strong> {{ corrida.destino }}</p>
+    <p><strong>Status:</strong> {{ corrida.status }}</p>
+
+    <div id="map">Carregando mapa...</div>
+  </div>
+
+  <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
+  <script>
+    const origemTexto = "{{ corrida.origem }}";
+    const destinoTexto = "{{ corrida.destino }}";
+
+    const mapa = L.map('map').setView([-22.913, -43.228], 14); // posição inicial padrão
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(mapa);
+
+    function buscarCoordenadas(endereco) {
+      const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(endereco)}`;
+      return fetch(url, { headers: { 'User-Agent': 'USBtecnokCar/1.0' } })
+        .then(response => response.json())
+        .then(data => {
+          if (data.length > 0) {
+            return {
+              lat: parseFloat(data[0].lat),
+              lon: parseFloat(data[0].lon)
+            };
+          } else {
+            throw new Error("Endereço não encontrado: " + endereco);
+          }
+        });
+    }
+
+    async function carregarMapa() {
+      try {
+        const coordOrigem = await buscarCoordenadas(origemTexto);
+        const coordDestino = await buscarCoordenadas(destinoTexto);
+
+        // Ajusta o mapa para mostrar os dois pontos
+        const grupo = L.featureGroup([
+          L.marker([coordOrigem.lat, coordOrigem.lon]).bindPopup("Origem: " + origemTexto),
+          L.marker([coordDestino.lat, coordDestino.lon]).bindPopup("Destino: " + destinoTexto)
+        ]).addTo(mapa);
+
+        mapa.fitBounds(grupo.getBounds(), { padding: [30, 30] });
+      } catch (erro) {
+        document.getElementById("map").innerHTML = `<p style="color:red;">Erro ao localizar endereço: ${erro.message}</p>`;
+      }
+    }
+
+    carregarMapa();
+  </script>
+</body>
+</html>

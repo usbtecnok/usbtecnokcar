@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Corridas</title>
+</head>
+<body>
+    <h1>Lista de Corridas</h1>
+    <ul>
+    {% for corrida in corridas %}
+        <li>{{ corrida.origem }} → {{ corrida.destino }} — R$ {{ corrida.preco }}</li>
+    {% empty %}
+        <li>Nenhuma corrida cadastrada.</li>
+    {% endfor %}
+    </ul>
+</body>
+</html>

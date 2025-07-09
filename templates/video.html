@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8" />
+    <title>Vídeo no Flask</title>
+</head>
+<body>
+    <h1>Meu Vídeo</h1>
+    <video width="640" height="360" controls>
+        <source src="{{ url_for('static', filename='videos/USBTECNOK_ Segurança e Praticidade no Transporte!.mp4') }}" type="video/mp4">
+        Seu navegador não suporta a tag de vídeo.
+    </video>
+</body>
+</html>

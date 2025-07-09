@@ -1,0 +1,11 @@
+{
+  "android": {
+    "release": {
+      "keystore": "usbtecnokcar.keystore",
+      "storePassword": "@#*Z4939ia4",
+      "alias": "usbtecnokcar",
+      "password": "@#*Z4939ia4",
+      "keystoreType": ""
+    }
+  }
+}

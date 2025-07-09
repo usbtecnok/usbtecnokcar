@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Rota da Corrida</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" />
+  <style>
+    #map {
+      height: 500px;
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+  <h2>Detalhes da Corrida</h2>
+  <p><strong>Origem:</strong> São Paulo</p>
+  <p><strong>Destino:</strong> Rio de Janeiro</p>
+  <div id="map"></div>
+
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
+
+  <script>
+    async function getCoordinates(address) {
+      const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(address)}`;
+      const response = await fetch(url, {
+        headers: {
+          'User-Agent': 'usbtecnokcar/1.0 (contato@usbtecnok.com.br)'
+        }
+      });
+      const data = await response.json();
+      if (data && data.length > 0) {
+        return [parseFloat(data[0].lat), parseFloat(data[0].lon)];
+      }
+      throw new Error("Endereço não encontrado: " + address);
+    }
+
+    async function mostrarRota() {
+      try {
+        const origem = await getCoordinates("São Paulo, Brasil");
+        const destino = await getCoordinates("Rio de Janeiro, Brasil");
+
+        const map = L.map('map').setView(origem, 6);
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+
+        // Marcadores
+        L.marker(origem).addTo(map).bindPopup("Origem: São Paulo").openPopup();
+        L.marker(destino).addTo(map).bindPopup("Destino: Rio de Janeiro");
+
+        // Linha azul da rota
+        L.polyline([origem, destino], { color: 'blue' }).addTo(map);
+
+      } catch (error) {
+        alert("Não foi possível carregar o mapa. Verifique os endereços.");
+        console.error(error);
+      }
+    }
+
+    mostrarRota();
+  </script>
+</body>
+</html>

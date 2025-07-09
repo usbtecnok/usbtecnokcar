@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <title>USBtecnokCar</title>
+
+  <!-- Estilos do Leaflet -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <style>
+    #map {
+      height: 400px;
+      margin-top: 20px;
+    }
+    .container {
+      max-width: 600px;
+      margin: auto;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>USBtecnokCar</h1>
+    <p>Seu transporte comunitário confiável</p>
+
+    <form action="/pedido" method="post">
+      <label for="origem">De:</label>
+      <input type="text" id="origem" name="origem" placeholder="Ponto de partida" required />
+      <label for="destino">Para:</label>
+      <input type="text" id="destino" name="destino" placeholder="Destino" required />
+      <button type="submit">Pedir Corrida</button>
+    </form>
+
+    <div id="map"></div>
+  </div>
+
+  <!-- Scripts do Leaflet -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

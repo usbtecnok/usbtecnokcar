@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Corrida para Motorista</title>
+</head>
+<body>
+  <h1>Nova corrida disponível</h1>
+  <p>Origem: {{ origem }}</p>
+  <p>Destino: {{ destino }}</p>
+  <p>Motorista: {{ motorista.nome }} - Telefone: {{ motorista.telefone }}</p>
+  <a href="{{ url_for('aceitar', pedido_id=pedido_id) }}">Aceitar corrida</a>
+</body>
+</html>

@@ -1,0 +1,11 @@
+import mysql.connector
+
+conexao = mysql.connector.connect(
+    host="localhost",
+    user="tecnok",
+    password="123456",
+    database="usbtecnokcar"
+)
+
+print("Conectado com sucesso!")
+conexao.close()

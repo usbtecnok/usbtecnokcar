@@ -1,0 +1,29 @@
+from flask import Flask, render_template, request
+import mysql.connector
+
+app = Flask(__name__)
+
+# Conexão com o MySQL
+db = mysql.connector.connect(
+    host="localhost",
+    user="dbadmin",  # ou o usuário que você usa
+    password="@#*Z4939ia4",  # substitua pela senha correta
+    database="usbtecnokcar"
+)
+cursor = db.cursor()
+
+@app.route('/', methods=['GET', 'POST'])
+def index():
+    if request.method == 'POST':
+        origem = request.form.get('origem')
+        destino = request.form.get('destino')
+
+        # Salvar no banco
+        cursor.execute("INSERT INTO corridas (origem, destino) VALUES (%s, %s)", (origem, destino))
+        db.commit()
+
+        return render_template('confirmacao.html', origem=origem, destino=destino)
+    return render_template('index.html')
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5000)
